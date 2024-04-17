@@ -6,7 +6,7 @@
 /*   By: lissam <lissam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 11:08:46 by lissam            #+#    #+#             */
-/*   Updated: 2024/04/17 09:37:10 by lissam           ###   ########.fr       */
+/*   Updated: 2024/04/17 21:33:21 by lissam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,27 @@ void	number_of_meals_counter(t_philo *philo)
 	pthread_mutex_unlock(philo->data->lock);
 }
 
-void	join_destroy(t_data *data, t_philo *philos, t_mutex *mutexes)
+int	join_destroy(t_data *data, t_philo *philos, t_mutex *mutexes)
 {
 	int	i;
 
 	i = 0;
 	while (i < data->n_philos)
-		pthread_join(philos[i++].t, NULL);
+	{
+		if (pthread_join(philos[i++].t, NULL))
+		{
+			error_pthread_create();
+			return (1);
+		}
+	}
 	i = 0;
 	while (i < data->n_philos)
-		pthread_mutex_destroy(&mutexes[i++].mutex);
+	{
+		if (pthread_mutex_destroy(&mutexes[i++].mutex))
+		{
+			error_mutex_destroy();
+			return (1);
+		}
+	}
+	return (0);
 }

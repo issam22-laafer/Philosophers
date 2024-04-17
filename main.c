@@ -6,7 +6,7 @@
 /*   By: lissam <lissam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/27 09:48:36 by lissam            #+#    #+#             */
-/*   Updated: 2024/04/17 15:56:27 by lissam           ###   ########.fr       */
+/*   Updated: 2024/04/17 21:18:20 by lissam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ int	main(int ac, char **av)
 	if (data->n_philos == 0 || data->times_must_eat == 0)
 		return (0);
 	data->start = 0;
-	philo(data);
+	if (philo(data) == 1)
+		return (1);
 }

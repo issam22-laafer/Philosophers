@@ -6,7 +6,7 @@
 /*   By: lissam <lissam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 11:08:00 by lissam            #+#    #+#             */
-/*   Updated: 2024/04/17 15:16:49 by lissam           ###   ########.fr       */
+/*   Updated: 2024/04/17 21:50:24 by lissam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,11 @@ int					check_lenght(char *av);
 int					ft_strlen(char *str);
 long				ft_atol(char *str);
 int					if_number(int ac, char **av);
-void				philo(t_data *data);
+int					philo(t_data *data);
 void				error_pthread_create(void);
+void				error_pthread_join(void);
+void				error_mutex_destroy(void);
+void				error_mutex_init(void);
 long				get_current_time(void);
 int					ft_usleep(long milliseconds);
 int					print_sleep(t_philo *philo, long time_passed);
@@ -80,7 +83,8 @@ int					eat(t_philo *philo);
 int					sleep_(t_philo *philo);
 int					think(t_philo *philo);
 void				number_of_meals_counter(t_philo *philo);
-void				join_destroy(t_data *data, t_philo *philos,
+int					join_destroy(t_data *data, t_philo *philos,
 						t_mutex *mutexes);
+int					init_mutexes_locks(t_data *data, t_mutex *mutexes);
 void				init(t_data *data, t_philo *philo, t_mutex *mutexes, int i);
 #endif

@@ -6,7 +6,7 @@
 /*   By: lissam <lissam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 11:08:40 by lissam            #+#    #+#             */
-/*   Updated: 2024/04/17 16:00:06 by lissam           ###   ########.fr       */
+/*   Updated: 2024/04/17 21:50:36 by lissam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,36 +91,33 @@ void	*monitoring(void *philosophers)
 	return (0);
 }
 
-void	sit_at_the_table(t_data *data, t_philo *philos, t_mutex *mutexes)
+int	sit_at_the_table(t_data *data, t_philo *philos, t_mutex *mutexes)
 {
 	int	i;
 
 	i = 0;
-	while (i < data->n_philos)
-		pthread_mutex_init(&mutexes[i++].mutex, NULL);
-	data->lock = malloc(sizeof(pthread_mutex_t));
-	data->lock_printing = malloc(sizeof(pthread_mutex_t));
-	data->lock_time = malloc(sizeof(pthread_mutex_t));
-	if (!data->lock || !data->lock_printing || !data->lock_time)
+	if (init_mutexes_locks(data, mutexes) == 1)
 	{
-		printf("Malloc error\n");
-		return ;
+		printf(RED " Error while creating locks or mutexes \n");
+		return (1);
 	}
-	pthread_mutex_init(data->lock, NULL);
-	pthread_mutex_init(data->lock_printing, NULL);
-	pthread_mutex_init(data->lock_time, NULL);
 	i = -1;
 	while (++i < data->n_philos)
-	{
 		init(data, &philos[i], mutexes, i);
-	}
 	i = -1;
 	data->start = get_current_time();
 	while (++i < data->n_philos)
-		pthread_create(&philos[i].t, NULL, routine, &philos[i]);
+	{
+		if (pthread_create(&philos[i].t, NULL, routine, &philos[i]))
+		{
+			error_pthread_create();
+			return (1);
+		}
+	}
+	return (0);
 }
 
-void	philo(t_data *data)
+int	philo(t_data *data)
 {
 	t_philo	*philos;
 	t_mutex	*mutexes;
@@ -130,11 +127,13 @@ void	philo(t_data *data)
 	if (!philos || !mutexes)
 	{
 		printf("Malloc error\n");
-		return ;
+		return (1);
 	}
-	sit_at_the_table(data, philos, mutexes);
+	if (sit_at_the_table(data, philos, mutexes) == 1)
+		return (1);
 	monitoring(philos);
-	join_destroy(data, philos, mutexes);
+	if (join_destroy(data, philos, mutexes) == 1)
+		return (1);
 	pthread_mutex_destroy(data->lock);
 	pthread_mutex_destroy(data->lock_printing);
 	pthread_mutex_destroy(data->lock_time);
@@ -144,4 +143,5 @@ void	philo(t_data *data)
 	free(data);
 	free(philos);
 	free(mutexes);
+	return (0);
 }
