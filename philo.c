@@ -6,7 +6,7 @@
 /*   By: lissam <lissam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 11:08:40 by lissam            #+#    #+#             */
-/*   Updated: 2024/04/17 15:16:36 by lissam           ###   ########.fr       */
+/*   Updated: 2024/04/17 16:00:06 by lissam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void	*routine(void *philos)
 	philo = (t_philo *)philos;
 	if (philo->id % 2 == 0)
 		ft_usleep(50);
-	pthread_mutex_lock(philo->left);
+	pthread_mutex_lock(philo->data->lock);
 	end_variable = philo->data->end;
-	pthread_mutex_unlock(philo->left);
+	pthread_mutex_unlock(philo->data->lock);
 	while (end_variable == 0)
 	{
 		if (eat(philo) == 1)
@@ -101,6 +101,11 @@ void	sit_at_the_table(t_data *data, t_philo *philos, t_mutex *mutexes)
 	data->lock = malloc(sizeof(pthread_mutex_t));
 	data->lock_printing = malloc(sizeof(pthread_mutex_t));
 	data->lock_time = malloc(sizeof(pthread_mutex_t));
+	if (!data->lock || !data->lock_printing || !data->lock_time)
+	{
+		printf("Malloc error\n");
+		return ;
+	}
 	pthread_mutex_init(data->lock, NULL);
 	pthread_mutex_init(data->lock_printing, NULL);
 	pthread_mutex_init(data->lock_time, NULL);
