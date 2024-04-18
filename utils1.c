@@ -6,7 +6,7 @@
 /*   By: lissam <lissam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 11:08:46 by lissam            #+#    #+#             */
-/*   Updated: 2024/04/17 21:33:21 by lissam           ###   ########.fr       */
+/*   Updated: 2024/04/18 11:34:21 by lissam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@ int	ft_usleep(long milliseconds)
 
 void	number_of_meals_counter(t_philo *philo)
 {
-	pthread_mutex_lock(philo->data->lock);
+	pthread_mutex_lock(philo->data->lock_time);
 	if (philo->number_of_meals < philo->data->times_must_eat)
 		philo->number_of_meals++;
-	pthread_mutex_unlock(philo->data->lock);
+	pthread_mutex_unlock(philo->data->lock_time);
 }
 
 int	join_destroy(t_data *data, t_philo *philos, t_mutex *mutexes)
