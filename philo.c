@@ -6,7 +6,7 @@
 /*   By: lissam <lissam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 11:08:40 by lissam            #+#    #+#             */
-/*   Updated: 2024/04/17 21:50:36 by lissam           ###   ########.fr       */
+/*   Updated: 2024/04/18 12:24:37 by lissam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	*routine(void *philos)
 
 	philo = (t_philo *)philos;
 	if (philo->id % 2 == 0)
-		ft_usleep(50);
+		ft_usleep(60);
 	pthread_mutex_lock(philo->data->lock);
 	end_variable = philo->data->end;
 	pthread_mutex_unlock(philo->data->lock);
@@ -31,9 +31,9 @@ void	*routine(void *philos)
 			break ;
 		if (think(philo) == 1)
 			break ;
-		pthread_mutex_lock(philo->left);
+		pthread_mutex_lock(philo->data->lock);
 		end_variable = philo->data->end;
-		pthread_mutex_unlock(philo->left);
+		pthread_mutex_unlock(philo->data->lock);
 	}
 	return (0);
 }
