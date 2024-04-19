@@ -6,7 +6,7 @@ OBJ = $(SRC:.c=.o)
 
 CC = cc 
 
-CFLAGS = -Wall -Wextra -Werror -pthread -fsanitize=thread -g3
+CFLAGS = -Wall -Wextra -Werror -pthread #-fsanitize=thread -g3
 
 all : $(NAME)
 
