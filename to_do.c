@@ -6,7 +6,7 @@
 /*   By: lissam <lissam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/14 15:37:29 by lissam            #+#    #+#             */
-/*   Updated: 2024/04/17 14:50:01 by lissam           ###   ########.fr       */
+/*   Updated: 2024/04/20 06:46:58 by lissam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ int	check_number_meals(t_philo *philo)
 {
 	int	times_eat;
 
-	pthread_mutex_lock(philo->data->lock);
+	pthread_mutex_lock(philo->data->lock_time);
 	times_eat = philo->data->times_must_eat;
-	pthread_mutex_unlock(philo->data->lock);
+	pthread_mutex_unlock(philo->data->lock_time);
 	if (philo->number_of_meals == times_eat)
 	{
 		pthread_mutex_unlock(philo->right);
